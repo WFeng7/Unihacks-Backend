@@ -8,9 +8,10 @@ var auth = require('./_auth');
  * @returns {undefined}
  */
 module.exports = async function (req, res, url) {
-  let user = auth.auth(req, res);
-  if (!user) return;
-  let token = auth.createToken(user);
+  let header = req.headers.authorization;
+  if (!header.startsWith('Bearer ')) throw 'invalid header';
+  header = header.slice(7);
+  let token = auth.deleteToken(user);
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end(token);
 };

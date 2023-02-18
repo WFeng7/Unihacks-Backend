@@ -6,6 +6,7 @@ const handlers = Object.create(null);
 function getHandlersRec(p, h) {
   fs.readdirSync(p, { withFileTypes: true }).forEach(v => {
     let name = path.basename(v.name, path.extname(v.name));
+    if (name[0] === '_') return;
     let _p = path.join(p, name);
     if (v.isDirectory()) {
       h[name] = Object.create(null);
@@ -38,12 +39,16 @@ server.on('request', (req, res) => {
       }
     } else break;
   }
-  try {
-    hand(req, res, url);
-  } catch (err) {
+  (function() {
+    try {
+      return Promise.resolve(hand(req, res, url));
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }()).catch(err => {
     console.log('error', err);
     if (res.writableEnded) return;
     if (!res.headersSent) res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end(`Error: ${err}`);
-  }
+  });
 });

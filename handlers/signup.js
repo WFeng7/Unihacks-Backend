@@ -1,5 +1,5 @@
+var fs = require('fs');
 var http = require('http');
-var auth = require('./_auth');
 
 /**
  * @param {http.IncomingRequest} req
@@ -7,10 +7,8 @@ var auth = require('./_auth');
  * @param {string[]} url
  * @returns {undefined}
  */
-module.exports = async function (req, res, url) {
-  let user = auth.auth(req, res);
-  if (!user) return;
-  let token = auth.createToken(user);
+module.exports = function(req, res, url) {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end(token);
+  res.write(`test login.`);
+  res.end();
 };
