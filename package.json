@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/WFeng7/Unihacks-Backend#readme",
   "dependencies": {
-    "fs": "^0.0.1-security"
+    "@types/node": "^18.14.0"
   }
 }
