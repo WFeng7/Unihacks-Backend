@@ -23,6 +23,19 @@ server.listen(80, () => {
 });
 
 server.on('request', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  console.log(req.method, req.url);
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
+    res.setHeader('Access-Control-Max-Age', 2592000);
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization');
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
   const url = req.url.split('/').filter(v => v);
   // res.writeHead(200, { 'Content-Type': 'text/plain' });
   // res.write(`"${JSON.stringify(url)}"`);

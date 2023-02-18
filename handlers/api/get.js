@@ -7,11 +7,13 @@ var util = require('../_util');
  * @param {http.ServerResponse} res
  * @param {string[]} url
  * @returns {undefined}
- */ module.exports = function (req, res, url) {
+ */ module.exports = function(req, res, url) {
   let user = auth.auth(req, res);
-  if (!user) return;
+  if (!user) throw 'user does not exist';
+
   let id = url[0] || user.id;
   if (id !== user.id && user.type > 1) throw 'invalid permissions';
+
   user = util.get(id);
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.write(

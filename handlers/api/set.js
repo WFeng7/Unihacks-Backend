@@ -7,9 +7,9 @@ var util = require('../_util');
  * @param {http.ServerResponse} res
  * @param {string[]} url
  * @returns {undefined}
- */ module.exports = async function (req, res, url) {
+ */ module.exports = async function(req, res, url) {
   let user = auth.auth(req, res);
-  if (!user) return;
+  if (!user) throw 'user does not exist';
 
   let data = await util.finishStream(req);
   data = JSON.parse(data);

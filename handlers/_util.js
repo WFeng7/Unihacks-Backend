@@ -10,10 +10,17 @@
  * @property {string} data other data
  */
 var fs = require('fs');
+var path = require('path');
 var { randomUUID } = require('crypto');
 
-if (!fs.existsSync('./_users.json')) fs.writeFileSync('./_users.json', '[]');
-var users = JSON.parse(fs.readFileSync('./_users.json'));
+const userPath = path.join(__dirname, './_users.json');
+if (!fs.existsSync(userPath)) fs.writeFileSync(userPath, '[]');
+var users = JSON.parse(fs.readFileSync(userPath));
+setInterval(() => {
+  if (isFileUpdated) return;
+  fs.writeFile(userPath, JSON.stringify(users));
+  isFileUpdated = true;
+}, 60_000);
 var isFileUpdated = true;
 var idDict = {};
 var ignDict = {};
@@ -47,8 +54,9 @@ module.exports = {
    * @returns {undefined}
    */
   create(user) {
-    user.id = randomUUID;
+    user.id = randomUUID();
     idDict[user.id] = ignDict[user.username] = users.push(user) - 1;
+    isFileUpdated = false;
   },
   /**
    * @param {string} id
@@ -59,6 +67,7 @@ module.exports = {
     if (!(id in idDict)) return this.create(user);
     let i = idDict[id];
     users[i] = user;
+    isFileUpdated = false;
   },
   /**
    * @param {ReadableStream} stream
@@ -74,7 +83,3 @@ module.exports = {
     });
   }
 };
-setInterval(() => {
-  if (isFileUpdated) return;
-  fs.writeFile('./_users.json', JSON.stringify(users));
-}, 60_000);

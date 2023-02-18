@@ -12,18 +12,19 @@ module.exports = {
    */
   auth(req, res) {
     let header = req.headers.authorization;
+    if (!header) return void this.challenge(req, res);
     if (header.startsWith('Bearer ')) {
       header = header.slice(7);
       if (!tokens.has(header)) return void this.challenge(req, res);
       return tokens.get(header).user;
     }
-    if (!header.startsWith('Basic ')) return this.challenge(req, res), false;
+    if (!header.startsWith('Basic ')) return void this.challenge(req, res);
     header = header.slice(6);
     header = Buffer.from(header, 'base64').toString().split(':');
     let username = header.shift();
     let pass = header.join(':');
     let user = util.getUser(username);
-    if (!user || user.pass !== pass) return void this.challenge(req, res);
+    if (!user || user.password !== pass) return void this.challenge(req, res);
     return user;
   },
   /**
