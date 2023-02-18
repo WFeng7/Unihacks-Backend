@@ -7,7 +7,7 @@ var auth = require('./_auth');
  * @param {string[]} url
  * @returns {undefined}
  */
-module.exports = async function (req, res, url) {
+module.exports = function (req, res, url) {
   let user = auth.auth(req, res);
   if (!user) return;
   let token = auth.createToken(user);

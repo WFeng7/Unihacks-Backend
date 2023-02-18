@@ -7,7 +7,7 @@ var auth = require('./_auth');
  * @param {string[]} url
  * @returns {undefined}
  */
-module.exports = async function (req, res, url) {
+module.exports = function (req, res, url) {
   let header = req.headers.authorization;
   if (!header.startsWith('Bearer ')) throw 'invalid header';
   header = header.slice(7);

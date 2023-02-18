@@ -1,8 +1,13 @@
 /**
  * @typedef {Object} User
- * @property {string} id - uuid
+ * @property {(0|1|2)} type access level
+ * - 0: admin
+ * - 1: mod
+ * - 2: user
+ * @property {string} id uuid
  * @property {string} username
- * @property {string} pass - cleartext
+ * @property {string} pass cleartext
+ * @property {string} data other data
  */
 var fs = require('fs');
 var { randomUUID } = require('crypto');
@@ -10,7 +15,7 @@ var { randomUUID } = require('crypto');
 if (!fs.existsSync('./_users.json')) fs.writeFileSync('./_users.json', '[]');
 var users = JSON.parse(fs.readFileSync('./_users.json'));
 var isFileUpdated = true;
-var idDict = {}
+var idDict = {};
 var ignDict = {};
 users.forEach((v, i) => {
   idDict[v.id] = i;
@@ -60,9 +65,9 @@ module.exports = {
    * @returns {Promise<Buffer>}
    */
   finishStream(stream) {
-    return new Promise(res => {
+    return new Promise((res) => {
       let data = [];
-      stream.on('data', c => data.push(c));
+      stream.on('data', (c) => data.push(c));
       stream.on('end', () => {
         res(Buffer.concat(data));
       });
