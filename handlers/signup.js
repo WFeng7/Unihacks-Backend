@@ -7,7 +7,7 @@ var util = require('./_util');
  * @param {string[]} url
  * @returns {undefined}
  */
-module.exports = async function (req, res, url) {
+module.exports = async function(req, res, url) {
   let header = req.headers.authorization;
   if (!header.startsWith('Basic ')) throw 'invalid header';
   header = header.slice(6);
