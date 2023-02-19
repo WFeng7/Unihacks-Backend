@@ -30,7 +30,7 @@ server.on('request', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
     res.setHeader('Access-Control-Max-Age', 2592000);
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Headers', 'Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
     res.writeHead(204);
     res.end();
     return;
