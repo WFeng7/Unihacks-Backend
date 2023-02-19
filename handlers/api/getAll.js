@@ -1,5 +1,5 @@
 var http = require('http');
-var auth = require('../_auth');
+var token = require('../_token');
 var util = require('../_util');
 
 /**
@@ -8,7 +8,7 @@ var util = require('../_util');
  * @param {string[]} url
  * @returns {undefined}
  */ module.exports = function(req, res, url) {
-  let user = auth.auth(req, res);
+  let user = token.authHeader(req, res);
   if (!user) throw 'user does not exist';
   if (user.type > 1) throw 'invalid permissions';
 
@@ -16,7 +16,7 @@ var util = require('../_util');
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.write(
     JSON.stringify(users, (k, v) =>
-      k === 'username' || k === 'password' ? void 0 : v
+      k === 'username' || k === 'password' || k === 'isDeleted' ? void 0 : v
     )
   );
   res.end();

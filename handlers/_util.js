@@ -7,7 +7,8 @@
  * @property {string} id uuid
  * @property {string} username
  * @property {string} password cleartext
- * @property {string} data other data
+ * @property {string} data other data'
+ * @property {boolean} isDeleted
  */
 var fs = require('fs');
 var path = require('path');
@@ -15,6 +16,7 @@ var { randomUUID } = require('crypto');
 
 const userPath = path.join(__dirname, './_users.json');
 if (!fs.existsSync(userPath)) fs.writeFileSync(userPath, '[]');
+/** @type {User[]} */
 var users = JSON.parse(fs.readFileSync(userPath));
 setInterval(() => {
   if (isFileUpdated) return;
@@ -25,6 +27,7 @@ var isFileUpdated = true;
 var idDict = {};
 var ignDict = {};
 users.forEach((v, i) => {
+  if (v.isDeleted) return;
   idDict[v.id] = i;
   ignDict[v.username] = i;
 });
@@ -70,6 +73,19 @@ module.exports = {
     users[i] = user;
     isFileUpdated = false;
     return user;
+  },
+  /**
+   * @param {string} id
+   * @returns {boolean} success
+   */
+  delete(id) {
+    if (!(id in idDict)) return false;
+    let i = idDict[id];
+    users[i].isDeleted = true;
+    delete idDict[id];
+    delete ignDict[users[i].username];
+    isFileUpdated = false;
+    return true;
   },
   /**
    * @param {ReadableStream} stream

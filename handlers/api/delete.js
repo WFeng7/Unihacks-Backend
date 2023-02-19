@@ -16,9 +16,7 @@ var util = require('../_util');
 
   user = util.get(id);
   if (!user) throw 'user not found';
-  let data = (await util.finishStream(req)).toString();
-  user.data = data;
-  util.update(id, user);
+  util.delete(id);
 
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end();

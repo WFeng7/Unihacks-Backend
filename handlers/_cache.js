@@ -2,9 +2,11 @@ var crypto = require('crypto');
 
 const UUID_LENGTH = 64;
 const CACHE_LENGTH = 60 * 60 * 1000;
-var createCache = function(cacheLen, uuidLen) {
+const REFRESH_LENGTH = 1 * 1000;
+var createCache = function(cacheLen, uuidLen, refreshLen) {
   if (cacheLen === null || cacheLen === undefined) cacheLen = CACHE_LENGTH;
   if (uuidLen === null || uuidLen === undefined) uuidLen = UUID_LENGTH;
+  if (refreshLen === null || refreshLen === undefined) refreshLen = REFRESH_LENGTH;
 
   let cached = new Map();
   let getUUID = function() {
@@ -66,7 +68,7 @@ var createCache = function(cacheLen, uuidLen) {
           cached.delete(uuid);
         }
       }
-    }, 60_000).unref()
+    }, refreshLen).unref()
   };
 };
 

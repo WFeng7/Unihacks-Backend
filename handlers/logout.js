@@ -1,5 +1,5 @@
 var http = require('http');
-var auth = require('./_auth');
+var token = require('./_token');
 
 /**
  * @param {http.IncomingRequest} req
@@ -11,7 +11,7 @@ module.exports = function(req, res, url) {
   let header = req.headers.authorization;
   if (!header.startsWith('Bearer ')) throw 'invalid header';
   header = header.slice(7);
-  let token = auth.deleteToken(user);
+  let userToken = token.deleteToken(user);
   res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end(token);
+  res.end(userToken);
 };
