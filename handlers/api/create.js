@@ -14,7 +14,7 @@ module.exports = async function(req, res, url) {
     if (!user || user.type < 2) throw 'invalid permissions';
   }
   let data = (await util.finishStream(req)).toString();
-  let { id } = util.create({ username: url[0] || '', password: url[1] || '', data, type: +url[2] || 2, isDeleted: false });
+  let { id } = util.create({ username: url[0] || '', password: url[1] || '', data, type: +url[2] || 2 });
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.write(id);
   res.end();

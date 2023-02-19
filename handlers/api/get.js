@@ -19,7 +19,7 @@ var util = require('../_util');
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.write(
     JSON.stringify(user, (k, v) =>
-      k === 'username' || k === 'password' || k === 'isDeleted' ? void 0 : v
+      k === 'username' || k === 'password' ? void 0 : v
     )
   );
   res.end();

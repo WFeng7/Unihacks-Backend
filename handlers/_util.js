@@ -8,7 +8,6 @@
  * @property {string} username
  * @property {string} password cleartext
  * @property {string} data other data'
- * @property {boolean} isDeleted
  */
 var fs = require('fs');
 var path = require('path');
@@ -22,12 +21,11 @@ setInterval(() => {
   if (isFileUpdated) return;
   fs.writeFile(userPath, JSON.stringify(users), err => err && console.log('Error saving file', err));
   isFileUpdated = true;
-}, 60_000);
+}, 1_000);
 var isFileUpdated = true;
 var idDict = {};
 var ignDict = {};
 users.forEach((v, i) => {
-  if (v.isDeleted) return;
   idDict[v.id] = i;
   ignDict[v.username] = i;
 });
@@ -81,9 +79,10 @@ module.exports = {
   delete(id) {
     if (!(id in idDict)) return false;
     let i = idDict[id];
-    users[i].isDeleted = true;
     delete idDict[id];
     delete ignDict[users[i].username];
+    idDict.forEach((v, _) => v > i && idDict[_]--);
+    users.splice(i, 1);
     isFileUpdated = false;
     return true;
   },
