@@ -16,7 +16,7 @@
     "url": "https://github.com/WFeng7/Unihacks-Backend/issues"
   },
   "homepage": "https://github.com/WFeng7/Unihacks-Backend#readme",
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "^18.14.0"
   }
 }
