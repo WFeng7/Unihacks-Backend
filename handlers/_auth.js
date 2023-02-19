@@ -28,6 +28,7 @@ module.exports = {
     if (user.type === 2) return void this.challenge(req, res);
     return user;
   },
+
   /**
    * @private
    * @description sends www-authenticate
