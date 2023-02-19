@@ -15,7 +15,7 @@ module.exports = async function(req, res, url) {
   let username = header.shift();
   let pass = header.join(':');
   let data = await util.finishStream(req);
-  util.create({ username, pass, data, type: 2 });
+  util.create({ username, password: pass, data, type: 2 });
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end();
 };

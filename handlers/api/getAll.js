@@ -7,20 +7,17 @@ var util = require('../_util');
  * @param {http.ServerResponse} res
  * @param {string[]} url
  * @returns {undefined}
- */ module.exports = async function(req, res, url) {
+ */ module.exports = function(req, res, url) {
   let user = auth.auth(req, res);
   if (!user) throw 'user does not exist';
+  if (user.type > 1) throw 'invalid permissions';
 
-  let data = await util.finishStream(req);
-  data = JSON.parse(data);
-  let id = url[0] || user.id;
-  if (id !== user.id && user.type > 1) throw 'invalid permissions';
-
-  user = util.get(id);
-  if (!user) throw 'user not found';
-  user.data = data;
-  util.update(id, user);
-
+  let users = util.getAll();
   res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.write(
+    JSON.stringify(users, (k, v) =>
+      k === 'username' || k === 'password' ? void 0 : v
+    )
+  );
   res.end();
 };

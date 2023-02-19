@@ -6,7 +6,7 @@
  * - 2: user
  * @property {string} id uuid
  * @property {string} username
- * @property {string} pass cleartext
+ * @property {string} password cleartext
  * @property {string} data other data
  */
 var fs = require('fs');
