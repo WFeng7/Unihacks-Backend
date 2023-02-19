@@ -21,7 +21,7 @@ module.exports = {
    */
   authToken(token) {
     if (!tokens.has(token)) return void 0;
-    return tokens.get(header).user;
+    return tokens.get(token).user;
   },
   /**
    * @param {util.User} user
