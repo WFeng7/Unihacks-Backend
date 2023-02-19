@@ -18,7 +18,7 @@ if (!fs.existsSync(userPath)) fs.writeFileSync(userPath, '[]');
 var users = JSON.parse(fs.readFileSync(userPath));
 setInterval(() => {
   if (isFileUpdated) return;
-  fs.writeFile(userPath, JSON.stringify(users));
+  fs.writeFile(userPath, JSON.stringify(users), err => console.log('Error saving file', err));
   isFileUpdated = true;
 }, 60_000);
 var isFileUpdated = true;
