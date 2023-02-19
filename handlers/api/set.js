@@ -11,13 +11,12 @@ var util = require('../_util');
   let user = auth.auth(req, res);
   if (!user) throw 'user does not exist';
 
-  let data = await util.finishStream(req);
-  data = JSON.parse(data);
   let id = url[0] || user.id;
   if (id !== user.id && user.type > 1) throw 'invalid permissions';
 
   user = util.get(id);
   if (!user) throw 'user not found';
+  let data = (await util.finishStream(req)).toString();
   user.data = data;
   util.update(id, user);
 
