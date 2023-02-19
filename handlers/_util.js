@@ -81,7 +81,7 @@ module.exports = {
     let i = idDict[id];
     delete idDict[id];
     delete ignDict[users[i].username];
-    idDict.forEach((v, _) => v > i && idDict[_]--);
+    Object.entries(idDict).forEach(([v, _]) => _ > i && idDict[v]--);
     users.splice(i, 1);
     isFileUpdated = false;
     return true;
