@@ -51,23 +51,25 @@ module.exports = {
   },
   /**
    * @param {User} user
-   * @returns {undefined}
+   * @returns {User} created user
    */
   create(user) {
     user.id = randomUUID();
     idDict[user.id] = ignDict[user.username] = users.push(user) - 1;
     isFileUpdated = false;
+    return user;
   },
   /**
    * @param {string} id
    * @param {User} user
-   * @returns {undefined}
+   * @returns {User} updated user
    */
   update(id, user) {
     if (!(id in idDict)) return this.create(user);
     let i = idDict[id];
     users[i] = user;
     isFileUpdated = false;
+    return user;
   },
   /**
    * @param {ReadableStream} stream

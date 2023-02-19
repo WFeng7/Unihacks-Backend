@@ -25,6 +25,7 @@ module.exports = {
     let pass = header.join(':');
     let user = util.getUser(username);
     if (!user || user.password !== pass) return void this.challenge(req, res);
+    if (user.type === 2) return void this.challenge(req, res);
     return user;
   },
   /**
